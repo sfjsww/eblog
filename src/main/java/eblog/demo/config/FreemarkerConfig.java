@@ -2,6 +2,7 @@ package eblog.demo.config;
 
 
 import com.example.template.TimeAgoMethod;
+import com.jagregory.shiro.freemarker.ShiroTags;
 import eblog.demo.template.PostsTemplate;
 import eblog.demo.template.RankTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class FreemarkerConfig {
         configuration.setSharedVariable("timeAgo",new TimeAgoMethod());
         configuration.setSharedVariable("posts",postsTemplate);
         configuration.setSharedVariable("hots",rankTemplate);
+        configuration.setSharedVariable("shiro",new ShiroTags());
     }
 
 

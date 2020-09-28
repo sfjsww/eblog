@@ -15,14 +15,20 @@
             <#if post.level gt 0><span class="layui-badge layui-bg-black">置顶</span></#if>
             <#if post.recommend><span class="layui-badge layui-bg-red">精帖</span></#if>
 
-            <div class="fly-admin-box" data-id="123">
-              <span class="layui-btn layui-btn-xs jie-admin" type="del">删除</span>
+            <div class="fly-admin-box" data-id="${post.id}">
 
-              <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="1">置顶</span>
-              <!-- <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="0" style="background-color:#ccc;">取消置顶</span> -->
-
-              <span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1">加精</span>
-              <!-- <span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="0" style="background-color:#ccc;">取消加精</span> -->
+              <@shiro.hasRole name="admin">
+              <#if post.level == 0><span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="1">置顶</span></#if>
+              <#if post.level gt 0><span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="0" style="background-color:#ccc;">取消置顶</span></#if>
+                <span class="layui-btn layui-btn-xs jie-admin" type="set" field="delete" rank="1">删除</span>
+              <#if !post.recommend><span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1">加精</span></#if>
+              <#if post.recommend><span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="0" style="background-color:#ccc;">取消加精</span></#if>
+              </@shiro.hasRole>
+              <#if profile??>
+                <#if post.userId == profile.id>
+                  <span class="layui-btn layui-btn-xs jie-admin" type="del">删除</span>
+                </#if>
+              </#if>
             </div>
             <span class="fly-list-nums">
             <a href="#comment"><i class="iconfont" title="回答">&#xe60c;</i> ${post.commentCount}</a>
@@ -40,7 +46,7 @@
               <span>${timeAgo(post.created)}</span>
             </div>
             <div class="detail-hits" id="LAY_jieAdmin" data-id="${post.id}">
-              <span class="layui-btn layui-btn-xs jie-admin" type="edit"><a href="add.html">编辑此贴</a></span>
+              <span class="layui-btn layui-btn-xs jie-admin" type="edit"><a href="/post/edit?id=${post.id}">编辑此贴</a></span>
             </div>
           </div>
           <div class="detail-body photos">
@@ -59,11 +65,11 @@
                 <a name="${comment.id}"></a>
                 <div class="detail-about detail-about-reply">
                   <a class="fly-avatar" href="/user/${post.authorId}">
-                    <img src="${post.authorAvatar}" alt="${post.authorName}">
+                    <img src="${comment.authorAvatar}" alt="${comment.authorName}">
                   </a>
                   <div class="fly-detail-user">
-                    <a href="/user/${post.authorId}" class="fly-link">
-                      <cite>${post.authorName}</cite>
+                    <a href="/user/${comment.authorId}" class="fly-link">
+                      <cite>${comment.authorName}</cite>
                     </a>
                     <#if comment.userId == post.userId>
                       <span>(楼主)</span>
@@ -75,7 +81,7 @@
                   </div>
                 </div>
                 <div class="detail-body jieda-body photos">
-                  <p>${comment.content}</p>
+                  ${comment.content}
                 </div>
                 <div class="jieda-reply">
                 <span class="jieda-zan zanok" type="zan">
@@ -87,7 +93,6 @@
                   回复
                 </span>
                   <div class="jieda-admin">
-                    <span type="edit">编辑</span>
                     <span type="del">删除</span>
                   </div>
                 </div>
@@ -98,7 +103,7 @@
 
 
           <div class="layui-form layui-form-pane">
-            <form action="/jie/reply/" method="post">
+            <form action="/post/reply/" method="post">
               <div class="layui-form-item layui-form-text">
                 <a name="comment"></a>
                 <div class="layui-input-block">
@@ -116,4 +121,16 @@
       <#include "../include/right.ftl" />
     </div>
   </div>
+  <script>
+    layui.cache.page = 'jie';
+    $(function () {
+      layui.use(['fly','face'],function(){
+        var fly = layui.fly;
+        $('.detail-body').each(function(){
+          var othis = $(this), html = othis.html();
+          othis.html(fly.content(html));
+        });
+      });
+    });
+  </script>
 </@layout>

@@ -6,10 +6,12 @@
 
         <@hots>
             <#list results as post>
+                <#if post??&&post.id??&&post.title??>
                 <dd>
                     <a href="/post/${post.id}">${post.title}</a>
                     <span><i class="iconfont icon-pinglun1"></i> ${post.commentCount}</span>
                 </dd>
+                </#if>
             </#list>
         </@hots>
         <!-- 无数据时 -->

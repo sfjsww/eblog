@@ -1,7 +1,9 @@
 package eblog.demo.service;
 
+import eblog.demo.common.lang.Result;
 import eblog.demo.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import eblog.demo.shiro.AccountProfile;
 
 /**
  * <p>
@@ -13,4 +15,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface UserService extends IService<User> {
 
+    Result register(User user);
+
+    AccountProfile login(String username, String password);
 }

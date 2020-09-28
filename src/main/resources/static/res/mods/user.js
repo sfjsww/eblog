@@ -3,6 +3,7 @@
  @Name: 用户模块
 
  */
+
  
 layui.define(['laypage', 'fly', 'element', 'flow'], function(exports){
 
@@ -23,6 +24,39 @@ layui.define(['laypage', 'fly', 'element', 'flow'], function(exports){
     ,minemsg: $('#LAY_minemsg')
     ,infobtn: $('#LAY_btninfo')
   };
+  var ajax_json = {
+
+    //Ajax
+    json: function(url, data, success, options){
+      var that = this, type = typeof data === 'function';
+
+      if(type){
+        options = success
+        success = data;
+        data = {};
+      }
+
+      options = options || {};
+
+      return $.ajax({
+        type: options.type || 'post',
+        dataType: options.dataType || 'json',
+        data: data,
+        url: url,
+        success: function(res){
+          if(res.status === 0) {
+            success && success(res);
+          } else {
+            layer.msg(res.msg || res.code, {shift: 6});
+            options.error && options.error();
+          }
+        }, error: function(e){
+          layer.msg('请求异常，请重试', {shift: 6});
+          options.error && options.error(e);
+        }
+      });
+    }}
+
 
   //我的相关数据
   var elemUC = $('#LAY_uc'), elemUCM = $('#LAY_ucm');
@@ -160,25 +194,37 @@ layui.define(['laypage', 'fly', 'element', 'flow'], function(exports){
     });
   }
 
-  //上传图片
+  // 上传图片
   if($('.upload-img')[0]){
     layui.use('upload', function(upload){
       var avatarAdd = $('.avatar-add');
-
       upload.render({
         elem: '.upload-img'
-        ,url: '/user/upload/'
+        ,url: '/user/upload'
         ,size: 50
         ,before: function(){
           avatarAdd.find('.loading').show();
         }
         ,done: function(res){
+          // console.log(res);
           if(res.status == 0){
-            $.post('/user/set/', {
-              avatar: res.url
+            // $.ajax({
+            //   type: "post",
+            //   dataType: "json",
+            //   url: "/user/set",
+            //   data: {avatar: res.data},
+            //   function(res) {
+            //     location.reload()
+            //   }
+            // });
+            $.post('/user/set',{
+              avatar: res.data
             }, function(res){
               location.reload();
             });
+            // ajax_json.json('/user/set',{avatar: res.data},function (res_) {
+            //   location.reload();
+            // })
           } else {
             layer.msg(res.msg, {icon: 5});
           }

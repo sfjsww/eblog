@@ -1,9 +1,12 @@
 package eblog.demo.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import eblog.demo.service.CommentService;
-import eblog.demo.service.PostService;
+import eblog.demo.entity.UserCollection;
+import eblog.demo.service.*;
 import eblog.demo.service.impl.PostServiceImpl;
+import eblog.demo.shiro.AccountProfile;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.mgt.SecurityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.ServletRequestUtils;
 
@@ -17,6 +20,16 @@ public class BaseController {
     PostService postService;
     @Autowired
     CommentService commentService;
+    @Autowired
+    UserService userService;
+    @Autowired
+    UserMessageService messageService;
+    @Autowired
+    UserCollectionService userCollectionService;
+    @Autowired
+    CategoryService categoryService;
+    @Autowired
+    WsService wsService;
 
     public Page getPage(){
         int pn = ServletRequestUtils.getIntParameter(req,"pn",1);
@@ -24,5 +37,13 @@ public class BaseController {
 
         return new Page(pn,size);
 
+    }
+
+    protected AccountProfile getProfile(){
+        return (AccountProfile)SecurityUtils.getSubject().getPrincipal();
+    }
+
+    protected Long getProfileId(){
+        return getProfile().getId();
     }
 }

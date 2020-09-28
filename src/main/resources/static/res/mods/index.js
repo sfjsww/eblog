@@ -99,7 +99,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
         ,'<span type="face" title="插入表情"><i class="iconfont icon-yxj-expression" style="top: 1px;"></i></span>'
         ,'<span type="picture" title="插入图片：img[src]"><i class="iconfont icon-tupian"></i></span>'
         ,'<span type="href" title="超链接格式：a(href)[text]"><i class="iconfont icon-lianjie"></i></span>'
-        ,'<span type="code" title="插入代码或引用"><i class="iconfont icon-emwdaima" style="top: 1px;"></i></span>'
+        ,'<span type="status" title="插入代码或引用"><i class="iconfont icon-emwdaima" style="top: 1px;"></i></span>'
         ,'<span type="hr" title="插入水平线">hr</span>'
         ,'<span type="yulan" title="预览"><i class="iconfont icon-yulan1"></i></span>'
       ,'</div>'].join('');
@@ -287,11 +287,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
             var msg = $('<a class="fly-nav-msg" href="javascript:;">'+ res.count +'</a>');
             elemUser.append(msg);
             msg.on('click', function(){
-              fly.json('/message/read', {}, function(res){
-                if(res.status === 0){
-                  location.href = '/user/message/';
-                }
-              });
+              location.href = '/user/message/';
             });
             layer.tips('你有 '+ res.count +' 条未读消息', msg, {
               tips: 3
@@ -553,9 +549,13 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
       var end = function(){
         if(res.action){
           location.href = res.action;
-        } else {
-          fly.form[action||button.attr('key')](data.field, data.form);
         }
+        if (button.attr('reload')){
+          location.reload();
+        }
+        // else {
+        //   fly.form[action||button.attr('key')](data.field, data.form);
+        // }
       };
       if(res.status == 0){
         button.attr('alert') ? layer.alert(res.msg, {
