@@ -6,6 +6,14 @@ spring:
     url: jdbc:p6spy:mysql://120.79.173.87:3306/eblog?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=UTC
     username: root
     password: 123
+#  freemarker:
+##    template-loader-path: classpath:/templates
+#    settings:
+#      classic_compatible: true
+
+
+#      datetime_format: yyyy-MM-dd HH:mm
+#      number_format: 0.##
   redis:
     host: 120.79.173.87
     port: 6379
@@ -16,10 +24,11 @@ spring:
       cluster-nodes: 120.79.173.87:9300
       repositories:
         enabled: true
-  rabbitmaq:
-    username: guest
-    password: guest
-    host: localhost
+  rabbitmq:
+    username: admin
+    password: admin
+    host: 120.79.173.87
+    port: 5672
   resources:
     static-locations: classpath:/static
 mybatis-plus:

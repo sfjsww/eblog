@@ -45,9 +45,11 @@
               </a>
               <span>${timeAgo(post.created)}</span>
             </div>
+
             <div class="detail-hits" id="LAY_jieAdmin" data-id="${post.id}">
-              <span class="layui-btn layui-btn-xs jie-admin" type="edit"><a href="/post/edit?id=${post.id}">编辑此贴</a></span>
+              <#if profile.id == post.userId><span class="layui-btn layui-btn-xs jie-admin" type="edit"><a href="/post/edit?id=${post.id}">编辑此贴</a></span></#if>
             </div>
+
           </div>
           <div class="detail-body photos">
             ${post.content}

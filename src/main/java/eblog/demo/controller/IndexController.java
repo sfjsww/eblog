@@ -3,6 +3,7 @@ package eblog.demo.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import eblog.demo.service.PostService;
+import eblog.demo.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestUtils;
@@ -25,5 +26,17 @@ public class IndexController extends BaseController{
         req.setAttribute("pageData",results);
         req.setAttribute("currentCategoryId",0);
         return "index";
+    }
+
+    @RequestMapping({"/search"})
+    public String search(String q){
+
+        IPage pageData = searchService.search(getPage(),q);
+
+
+        req.setAttribute("q",q);
+        req.setAttribute("pageData",pageData);
+        req.setAttribute("currentCategoryId",0);
+        return "search";
     }
 }

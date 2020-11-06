@@ -18,6 +18,9 @@ public class DemoApplication extends SpringBootServletInitializer {
     }
 
     public static void main(String[] args) {
+//        elasticsearch与redis的底层netty版本冲突
+        System.setProperty("es.set.netty.runtime.available.processors","false");
+
         SpringApplication.run(DemoApplication.class, args);
         System.out.println("http://localhost:8080");
     }

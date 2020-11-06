@@ -7,6 +7,7 @@ import eblog.demo.service.impl.PostServiceImpl;
 import eblog.demo.shiro.AccountProfile;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.mgt.SecurityManager;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.ServletRequestUtils;
 
@@ -30,6 +31,10 @@ public class BaseController {
     CategoryService categoryService;
     @Autowired
     WsService wsService;
+    @Autowired
+    SearchService searchService;
+    @Autowired
+    AmqpTemplate amqpTemplate;
 
     public Page getPage(){
         int pn = ServletRequestUtils.getIntParameter(req,"pn",1);

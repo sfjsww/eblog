@@ -7,7 +7,9 @@ import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import eblog.demo.common.lang.Result;
+import eblog.demo.config.RabbitConfig;
 import eblog.demo.entity.*;
+import eblog.demo.search.mq.PostMqIndexMessage;
 import eblog.demo.service.PostService;
 import eblog.demo.util.ValidationUtil;
 import eblog.demo.vo.CommentVo;
@@ -169,6 +171,9 @@ public class PostController extends BaseController{
 
         }
 
+        amqpTemplate.convertAndSend(RabbitConfig.ES_EXCHANGE,RabbitConfig.ES_BING_KEY,
+                new PostMqIndexMessage(post.getId(),PostMqIndexMessage.CREATE_OR_UPDATE));
+
         return Result.success().action("/post/" + post.getId());
 
 
@@ -190,8 +195,12 @@ public class PostController extends BaseController{
         userCollectionService.removeByMap(MapUtil.of("post_id",id));
         postService.removeHots(id);
 
+        amqpTemplate.convertAndSend(RabbitConfig.ES_EXCHANGE,RabbitConfig.ES_BING_KEY,
+                new PostMqIndexMessage(post.getId(),PostMqIndexMessage.REMOVE));
+
         Result result = Result.success("删除成功",null);
         result.setAction("/user/index");
+
         return result;
     }
 

@@ -8,9 +8,6 @@
                 <a href="/"><i class="iconfont icon-jiaoliu"></i>交流</a>
             </li>
             <li class="layui-nav-item">
-                <a href="case/case.html"><i class="iconfont icon-iconmingxinganli"></i>案例</a>
-            </li>
-            <li class="layui-nav-item">
                 <a href="http://www.layui.com/" target="_blank"><i class="iconfont icon-ui"></i>框架</a>
             </li>
         </ul>
@@ -28,12 +25,7 @@
             <li class="layui-nav-item">
                 <a href="/register">注册</a>
             </li>
-            <li class="layui-nav-item layui-hide-xs">
-                <a href="/app/qq/" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" title="QQ登入" class="iconfont icon-qq"></a>
-            </li>
-            <li class="layui-nav-item layui-hide-xs">
-                <a href="/app/weibo/" onclick="layer.msg('正在通过微博登入', {icon:16, shade: 0.1, time:0})" title="微博登入" class="iconfont icon-weibo"></a>
-            </li>
+
             </@shiro.guest>
 
             <!-- 登入后的状态 -->
